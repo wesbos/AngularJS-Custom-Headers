@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html ng-app="myApp">
+<head>
+  <title></title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular.min.js"></script>
+</head>
+  <body>
+    
+    <div ng-controller="MyCtrl">
+      <button ng-click="makeRequest()">make a request!</button>
+      <pre>{{headers}}</pre>
+    </div>
+
+
+    
+    <script>
+      var myApp = angular.module('myApp',[], function($httpProvider) {
+        
+        // Custom Function
+        $httpProvider.defaults.headers.common['token'] = function() {
+          var first = 3,
+              second =  4;
+          return first + second;
+        }
+        
+        // Just string
+        $httpProvider.defaults.headers.common['time'] = "testing 123";
+
+      });
+
+      function MyCtrl($scope, $http) {
+          $scope.makeRequest = function() {
+            $http({
+              method : 'POST',
+              url : 'app.php'
+            }).success(function(data, status, headers, config) {
+              $scope.headers = data;
+              console.log(data);
+            });
+
+          };
+      }
+    </script>
+  </body>
+</html>
